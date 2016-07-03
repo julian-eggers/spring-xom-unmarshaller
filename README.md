@@ -6,7 +6,7 @@ spring-xom-unmarshaller
 [![Coverage Status](https://coveralls.io/repos/julian-eggers/spring-xom-unmarshaller/badge.svg)](https://coveralls.io/r/julian-eggers/spring-xom-unmarshaller)
 [![Build Status](https://travis-ci.org/julian-eggers/spring-xom-unmarshaller.svg?branch=master)](https://travis-ci.org/julian-eggers/spring-xom-unmarshaller)
 
-XPath helpers based on [XOM](http://www.xom.nu/ "XOM")
+Spring XML Unmarshalling with [XOM](http://www.xom.nu/ "XOM")
 
 #### Maven
 ```xml
@@ -14,7 +14,7 @@ XPath helpers based on [XOM](http://www.xom.nu/ "XOM")
 	<dependency>
 		<groupId>com.itelg.spring</groupId>
 		<artifactId>spring-xom-unmarshaller</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1-RELEASE</version>
 	</dependency>
 </dependencies>
 ```
