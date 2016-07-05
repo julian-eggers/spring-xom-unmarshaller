@@ -18,3 +18,61 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/ "XOM")
 	</dependency>
 </dependencies>
 ```
+
+#### Examples
+
+##### Enable auto-configuration via annotation
+```java
+@SpringBootApplication
+@EnableXomUnmarshaller
+public class Application
+{
+    public static void main(String[] args) throws Exception
+    {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+##### Parser: root-tag resolving via target-class (Root-Tag: integer)
+```java
+@Component
+public class IntegerParser implements Parser<Integer>
+{
+    @Override
+    public Integer parse(Element rootElement)
+    {
+        return XPathHelper.getInteger("data/@value", rootElement);
+    }
+}
+```
+
+##### Parser: root-tag resolving via annotation (Root-Tag: text, blob or string)
+```java
+@Component
+@RootTagMatcher("text")
+@RootTagMatcher("blob")
+public class TextParser implements Parser<String>
+{
+    @Override
+    public Integer parse(Element rootElement)
+    {
+        return XPathHelper.getString("data/@value", rootElement);
+    }
+}
+```
+
+##### Parser: disable resolving via annotation (Root-Tag: text)
+```java
+@Component
+@RootTagMatcher("text")
+@DisableRootTagTypeMatcher
+public class TextParser implements Parser<String>
+{
+    @Override
+    public Integer parse(Element rootElement)
+    {
+        return XPathHelper.getString("data/@value", rootElement);
+    }
+}
+```
