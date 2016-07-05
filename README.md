@@ -28,7 +28,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/ "XOM")
 public class Application
 {
     @Autowired
-    private XomMarshaller xomMarshaller;
+    private XomUnmarshaller xomUnmarshaller;
     
     public static void main(String[] args) throws Exception
     {
@@ -83,5 +83,5 @@ public class TextParser implements Parser<String>
 #### Test-Support
 ```java
 Parser<?> parser = new IntegerParser();
-Assert.assertTrue(XomUnmarshallerTestUtil.resolves(parser, "<number><data value=\"11\" /></number>"));
+Assert.assertTrue(XomUnmarshallerTestUtil.resolves(parser, "<integer><data value=\"11\" /></integer>"));
 ```        
