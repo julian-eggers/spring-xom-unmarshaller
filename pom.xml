@@ -5,7 +5,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>0.0.1-RELEASE</version>
+  <version>0.0.2-RELEASE</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -169,16 +169,6 @@
       <groupId>com.itelg</groupId>
       <artifactId>xpath-helper</artifactId>
       <version>0.4.6-RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.21</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.4</version>
     </dependency>
 
     <!-- Testing -->

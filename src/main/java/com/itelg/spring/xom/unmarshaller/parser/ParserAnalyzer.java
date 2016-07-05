@@ -7,6 +7,10 @@ import com.itelg.spring.xom.unmarshaller.parser.annotation.RootTagMatcher;
 
 public class ParserAnalyzer
 {
+    private ParserAnalyzer()
+    {
+    }
+
     public static ParserHolder analyze(Parser<?> parser)
     {
         ParserHolder holder = new ParserHolder();
@@ -29,7 +33,7 @@ public class ParserAnalyzer
 
         return null;
     }
-    
+
     private static void appendRootTagByType(ParserHolder holder)
     {
         if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null)
@@ -37,7 +41,7 @@ public class ParserAnalyzer
             holder.addSupportedRootTag(holder.getReturnType().getSimpleName());
         }
     }
-    
+
     private static void appendRootTags(ParserHolder holder)
     {
         for (RootTagMatcher rootTagMatcher : holder.getParser().getClass().getAnnotationsByType(RootTagMatcher.class))

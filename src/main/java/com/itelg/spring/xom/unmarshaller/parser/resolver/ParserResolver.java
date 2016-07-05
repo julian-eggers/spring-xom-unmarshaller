@@ -11,10 +11,14 @@ import nu.xom.Element;
 
 public class ParserResolver
 {
+    private ParserResolver()
+    {
+    }
+
     public static Parser<?> resolve(List<ParserHolder> holders, Element rootElement)
     {
         String rootTag = rootElement.getLocalName().toLowerCase();
-        
+
         for (ParserHolder holder : holders)
         {
             for (String supportedRootTag : holder.getSupportedRootTags())
@@ -25,7 +29,7 @@ public class ParserResolver
                 }
             }
         }
-        
+
         throw new UnmarshallingFailureException("No parser applied (Root-Tag: " + rootElement.getLocalName() + ")");
     }
 }
