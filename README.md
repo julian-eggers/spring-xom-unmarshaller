@@ -14,7 +14,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/ "XOM")
 	<dependency>
 		<groupId>com.itelg.spring</groupId>
 		<artifactId>spring-xom-unmarshaller</artifactId>
-		<version>0.0.1-RELEASE</version>
+		<version>0.0.2-RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -27,6 +27,9 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/ "XOM")
 @EnableXomUnmarshaller
 public class Application
 {
+    @Autowired
+    private XomMarshaller xomMarshaller;
+    
     public static void main(String[] args) throws Exception
     {
         SpringApplication.run(Application.class, args);
@@ -76,3 +79,9 @@ public class TextParser implements Parser<String>
     }
 }
 ```
+
+#### Test-Support
+```java
+Parser<?> parser = new IntegerParser();
+Assert.assertTrue(XomUnmarshallerTestUtil.resolves(parser, "<number><data value=\"11\" /></number>"));
+```        
