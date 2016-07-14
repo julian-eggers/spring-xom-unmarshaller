@@ -5,7 +5,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>0.0.2-RELEASE</version>
+  <version>0.1.0-RELEASE</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -158,7 +158,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>1.3.5.RELEASE</version>
+      <version>1.3.6.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

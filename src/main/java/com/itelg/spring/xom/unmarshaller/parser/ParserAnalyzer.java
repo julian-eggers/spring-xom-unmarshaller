@@ -25,13 +25,13 @@ public class ParserAnalyzer
     {
         for (Method method : parser.getClass().getDeclaredMethods())
         {
-            if (method.getName().equals("parse"))
+            if (method.getName().equals("parse") && !method.getReturnType().equals(Object.class))
             {
                 return method.getReturnType();
             }
         }
 
-        return null;
+        throw new RuntimeException("Invalid parser-implementation!");
     }
 
     private static void appendRootTagByType(ParserHolder holder)
