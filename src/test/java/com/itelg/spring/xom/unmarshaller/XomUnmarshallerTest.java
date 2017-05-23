@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
@@ -21,7 +22,7 @@ import nu.xom.Element;
 
 public class XomUnmarshallerTest
 {
-    private XomUnmarshaller unmarshaller;
+    private Unmarshaller unmarshaller;
 
     @Before
     public void init()
@@ -29,7 +30,7 @@ public class XomUnmarshallerTest
         List<Parser<?>> parsers = new ArrayList<>();
         parsers.add(new RootTagMatcherParser());
         parsers.add(new RootTagTypeMatchingDisableParser());
-        parsers.add(new TestWriter());
+        parsers.add(new TestObjectParser());
         unmarshaller = new XomUnmarshaller(parsers);
     }
 
@@ -82,7 +83,7 @@ public class XomUnmarshallerTest
         // empty abstract class for type check
     }
 
-    private class TestWriter implements Parser<AbstractTestObject>
+    private class TestObjectParser implements Parser<AbstractTestObject>
     {
         @Override
         public AbstractTestObject parse(Element rootElement)
