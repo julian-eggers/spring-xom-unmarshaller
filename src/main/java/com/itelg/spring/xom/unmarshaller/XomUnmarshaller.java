@@ -37,7 +37,7 @@ public class XomUnmarshaller implements Unmarshaller
     {
         for (ParserHolder parser : parsers)
         {
-            if (clazz.equals(parser.getReturnType()))
+            if (parser.getReturnType().isAssignableFrom(clazz))
             {
                 return true;
             }
@@ -45,7 +45,7 @@ public class XomUnmarshaller implements Unmarshaller
 
         return false;
     }
-    
+
     @Override
     public Object unmarshal(Source source) throws IOException, XmlMappingException
     {

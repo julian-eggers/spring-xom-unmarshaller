@@ -11,16 +11,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
 import com.itelg.spring.xom.unmarshaller.parser.RootTagMatcherParser;
 import com.itelg.spring.xom.unmarshaller.parser.RootTagTypeMatchingDisableParser;
 
+import nu.xom.Element;
+
 public class XomUnmarshallerTest
 {
-    private Unmarshaller unmarshaller;
+    private XomUnmarshaller unmarshaller;
 
     @Before
     public void init()
@@ -28,6 +29,7 @@ public class XomUnmarshallerTest
         List<Parser<?>> parsers = new ArrayList<>();
         parsers.add(new RootTagMatcherParser());
         parsers.add(new RootTagTypeMatchingDisableParser());
+        parsers.add(new TestWriter());
         unmarshaller = new XomUnmarshaller(parsers);
     }
 
@@ -36,6 +38,7 @@ public class XomUnmarshallerTest
     {
         Assert.assertTrue(unmarshaller.supports(String.class));
         Assert.assertTrue(unmarshaller.supports(Integer.class));
+        Assert.assertTrue(unmarshaller.supports(TestObject.class));
         Assert.assertFalse(unmarshaller.supports(Double.class));
     }
 
@@ -48,7 +51,7 @@ public class XomUnmarshallerTest
             Assert.assertEquals("test", value);
         }
     }
-    
+
     @Test
     public void testUnmarshallNumber() throws IOException
     {
@@ -58,7 +61,7 @@ public class XomUnmarshallerTest
             Assert.assertEquals(Integer.valueOf(12), value);
         }
     }
-    
+
     @Test(expected = UnmarshallingFailureException.class)
     public void testUnmarshallLong() throws IOException
     {
@@ -66,6 +69,25 @@ public class XomUnmarshallerTest
         {
             unmarshaller.unmarshal(new StreamSource(inputStream));
             Assert.fail("unmarshaller should fail!");
+        }
+    }
+
+    private class TestObject extends AbstractTestObject
+    {
+        // empty class for type check
+    }
+
+    private abstract class AbstractTestObject
+    {
+        // empty abstract class for type check
+    }
+
+    private class TestWriter implements Parser<AbstractTestObject>
+    {
+        @Override
+        public AbstractTestObject parse(Element rootElement)
+        {
+            return null;
         }
     }
 }
