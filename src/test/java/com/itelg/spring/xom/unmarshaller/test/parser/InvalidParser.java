@@ -1,4 +1,6 @@
-package com.itelg.spring.xom.unmarshaller.parser;
+package com.itelg.spring.xom.unmarshaller.test.parser;
+
+import com.itelg.spring.xom.unmarshaller.parser.Parser;
 
 import nu.xom.Element;
 

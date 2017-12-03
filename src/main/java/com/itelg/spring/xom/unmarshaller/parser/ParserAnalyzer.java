@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import com.itelg.spring.xom.unmarshaller.parser.annotation.DisableRootTagTypeMatcher;
 import com.itelg.spring.xom.unmarshaller.parser.annotation.RootTagMatcher;
+import com.itelg.spring.xom.unmarshaller.parser.annotation.XPathExpressionMatcher;
 
 public class ParserAnalyzer
 {
@@ -18,6 +19,7 @@ public class ParserAnalyzer
         holder.setReturnType(getReturnType(parser));
         appendRootTagByType(holder);
         appendRootTags(holder);
+        appendXPathExpression(holder);
         return holder;
     }
 
@@ -47,6 +49,16 @@ public class ParserAnalyzer
         for (RootTagMatcher rootTagMatcher : holder.getParser().getClass().getAnnotationsByType(RootTagMatcher.class))
         {
             holder.addSupportedRootTag(rootTagMatcher.value());
+        }
+    }
+
+    private static void appendXPathExpression(ParserHolder holder)
+    {
+        XPathExpressionMatcher xPathMatcher = holder.getParser().getClass().getAnnotation(XPathExpressionMatcher.class);
+
+        if (xPathMatcher != null)
+        {
+            holder.setXPathExpression(xPathMatcher.value());
         }
     }
 }

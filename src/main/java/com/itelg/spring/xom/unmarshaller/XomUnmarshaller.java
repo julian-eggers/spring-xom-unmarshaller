@@ -57,6 +57,10 @@ public class XomUnmarshaller implements Unmarshaller
             Parser<?> parser = ParserResolver.resolve(parsers, rootElement);
             return parser.parse(rootElement);
         }
+        catch (UnmarshallingFailureException e)
+        {
+            throw e;
+        }
         catch (Exception e)
         {
             throw new UnmarshallingFailureException(e.getMessage(), e);

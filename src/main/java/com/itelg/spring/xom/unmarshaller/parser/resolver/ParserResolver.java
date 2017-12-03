@@ -6,6 +6,7 @@ import org.springframework.oxm.UnmarshallingFailureException;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
 import com.itelg.spring.xom.unmarshaller.parser.ParserHolder;
+import com.itelg.xpath.helper.XPathHelper;
 
 import nu.xom.Element;
 
@@ -21,6 +22,16 @@ public class ParserResolver
 
         for (ParserHolder holder : holders)
         {
+            // Resolve via xpath-expression
+            if (holder.getXPathExpression() != null)
+            {
+                if (XPathHelper.hasNode(holder.getXPathExpression(), rootElement))
+                {
+                    return holder.getParser();
+                }
+            }
+
+            // Resolve via root-tag
             for (String supportedRootTag : holder.getSupportedRootTags())
             {
                 if (rootTag.equalsIgnoreCase(supportedRootTag))

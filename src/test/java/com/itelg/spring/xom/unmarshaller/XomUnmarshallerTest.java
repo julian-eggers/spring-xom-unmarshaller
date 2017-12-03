@@ -1,13 +1,18 @@
 package com.itelg.spring.xom.unmarshaller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -15,10 +20,13 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
-import com.itelg.spring.xom.unmarshaller.parser.RootTagMatcherParser;
-import com.itelg.spring.xom.unmarshaller.parser.RootTagTypeMatchingDisableParser;
-
-import nu.xom.Element;
+import com.itelg.spring.xom.unmarshaller.test.domain.Customer;
+import com.itelg.spring.xom.unmarshaller.test.domain.Order;
+import com.itelg.spring.xom.unmarshaller.test.parser.DisabledRootTagByTypeParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByAnnotationParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByTypeParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionCustomerParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionOrderParser;
 
 public class XomUnmarshallerTest
 {
@@ -28,67 +36,112 @@ public class XomUnmarshallerTest
     public void init()
     {
         List<Parser<?>> parsers = new ArrayList<>();
-        parsers.add(new RootTagMatcherParser());
-        parsers.add(new RootTagTypeMatchingDisableParser());
-        parsers.add(new TestObjectParser());
+        parsers.add(new RootTagByTypeParser());
+        parsers.add(new RootTagByAnnotationParser());
+        parsers.add(new DisabledRootTagByTypeParser());
+        parsers.add(new XPathExpressionCustomerParser());
+        parsers.add(new XPathExpressionOrderParser());
         unmarshaller = new XomUnmarshaller(parsers);
     }
 
     @Test
     public void testSupports()
     {
-        Assert.assertTrue(unmarshaller.supports(String.class));
-        Assert.assertTrue(unmarshaller.supports(Integer.class));
-        Assert.assertTrue(unmarshaller.supports(TestObject.class));
-        Assert.assertFalse(unmarshaller.supports(Double.class));
+        assertTrue(unmarshaller.supports(String.class));
+        assertTrue(unmarshaller.supports(Long.class));
+        assertTrue(unmarshaller.supports(Double.class));
+        assertTrue(unmarshaller.supports(Customer.class));
+        assertTrue(unmarshaller.supports(Order.class));
+        assertFalse(unmarshaller.supports(BigDecimal.class));
     }
 
     @Test
-    public void testUnmarshallString() throws IOException
+    public void testUnmarshallWithUnknownParser() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("double.xml").getInputStream())
+        {
+            unmarshaller.unmarshal(new StreamSource(inputStream));
+            fail("Exception expected");
+        }
+        catch (Exception e)
+        {
+            assertEquals(UnmarshallingFailureException.class, e.getClass());
+            assertEquals("No parser applied (Root-Tag: double)", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithUnknownException() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("invalid.xml").getInputStream())
+        {
+            unmarshaller.unmarshal(new StreamSource(inputStream));
+            fail("Exception expected");
+        }
+        catch (Exception e)
+        {
+            assertEquals(UnmarshallingFailureException.class, e.getClass());
+            assertEquals("XML document structures must start and end within the same entity.; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithRootTagByType() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("string.xml").getInputStream())
         {
             String value = (String) unmarshaller.unmarshal(new StreamSource(inputStream));
-            Assert.assertEquals("test", value);
+            assertEquals("test", value);
         }
     }
 
     @Test
-    public void testUnmarshallNumber() throws IOException
+    public void testUnmarshallWithRootTagByAnnotationAndInteger() throws IOException
     {
-        try (InputStream inputStream = new ClassPathResource("number.xml").getInputStream())
+        try (InputStream inputStream = new ClassPathResource("integer.xml").getInputStream())
         {
-            Integer value = (Integer) unmarshaller.unmarshal(new StreamSource(inputStream));
-            Assert.assertEquals(Integer.valueOf(12), value);
+            Long value = (Long) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(Long.valueOf(456), value);
         }
     }
 
-    @Test(expected = UnmarshallingFailureException.class)
-    public void testUnmarshallLong() throws IOException
+    @Test
+    public void testUnmarshallWithRootTagByAnnotationAndLong() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("long.xml").getInputStream())
         {
-            unmarshaller.unmarshal(new StreamSource(inputStream));
-            Assert.fail("unmarshaller should fail!");
+            Long value = (Long) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(Long.valueOf(123), value);
         }
     }
 
-    private class TestObject extends AbstractTestObject
+    @Test
+    public void testUnmarshallWithDisableRootTagByType() throws IOException
     {
-        // empty class for type check
-    }
-
-    private abstract class AbstractTestObject
-    {
-        // empty abstract class for type check
-    }
-
-    private class TestObjectParser implements Parser<AbstractTestObject>
-    {
-        @Override
-        public AbstractTestObject parse(Element rootElement)
+        try (InputStream inputStream = new ClassPathResource("float.xml").getInputStream())
         {
-            return null;
+            Double value = (Double) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(Double.valueOf(12.23), value);
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithXPathExpressionAndCustomer() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("response1.xml").getInputStream())
+        {
+            Customer value = (Customer) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(123, value.getId());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithXPathExpressionAndOrder() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("response2.xml").getInputStream())
+        {
+            Order value = (Order) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(456, value.getId());
         }
     }
 }
