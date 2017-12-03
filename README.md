@@ -46,7 +46,7 @@ public class Application
 #### Parser resolving
 A matching parser can be resolved either via return-type, root-tag or an xpath-expression.
 
-##### Parser: root-tag resolving via return-type (Root-Tag: integer)
+##### Root-tag resolving via return-type (Root-Tag: integer)
 ```java
 @Component
 public class IntegerParser implements Parser<Integer>
@@ -74,7 +74,7 @@ public class TextParser implements Parser<String>
 }
 ```
 
-##### Disable resolving via annotation (Root-Tag: text)
+##### Disable type-resolving via annotation (Root-Tag: text)
 ```java
 @Component
 @RootTagMatcher("text")
@@ -89,7 +89,7 @@ public class TextParser implements Parser<String>
 }
 ```
 
-##### Resolving via xpath-expression (Root-Tag: response)
+##### Resolving via xpath-expression
 ```java
 @Component
 @XPathExpressionMatcher("//response/customer")
