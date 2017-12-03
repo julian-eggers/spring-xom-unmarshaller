@@ -11,13 +11,11 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 
 #### Maven
 ```xml
-<dependencies>
-	<dependency>
-		<groupId>com.itelg.spring</groupId>
-		<artifactId>spring-xom-unmarshaller</artifactId>
-		<version>0.2.0-RELEASE</version>
-	</dependency>
-</dependencies>
+<dependency>
+	<groupId>com.itelg.spring</groupId>
+	<artifactId>spring-xom-unmarshaller</artifactId>
+	<version>0.2.0-RELEASE</version>
+</dependency>
 ```
 
 
