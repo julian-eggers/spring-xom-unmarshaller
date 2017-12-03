@@ -14,7 +14,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 	<dependency>
 		<groupId>com.itelg.spring</groupId>
 		<artifactId>spring-xom-unmarshaller</artifactId>
-		<version>0.1.1-RELEASE</version>
+		<version>0.2.0-RELEASE</version>
 	</dependency>
 </dependencies>
 ```
