@@ -23,12 +23,9 @@ public class ParserResolver
         for (ParserHolder holder : holders)
         {
             // Resolve via xpath-expression
-            if (holder.getXPathExpression() != null)
+            if (holder.getXPathExpression() != null && XPathHelper.hasNode(holder.getXPathExpression(), rootElement))
             {
-                if (XPathHelper.hasNode(holder.getXPathExpression(), rootElement))
-                {
-                    return holder.getParser();
-                }
+                return holder.getParser();
             }
 
             // Resolve via root-tag
