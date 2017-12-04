@@ -7,7 +7,8 @@ public class ParserHolder
 {
     private Parser<?> parser;
     private Class<?> returnType;
-    private List<String> supportedRootTags = new ArrayList<>();;
+    private List<String> supportedRootTags = new ArrayList<>();
+    private String xpathExpression;
 
     public Parser<?> getParser()
     {
@@ -28,14 +29,24 @@ public class ParserHolder
     {
         this.returnType = returnType;
     }
-    
+
     public List<String> getSupportedRootTags()
     {
         return supportedRootTags;
     }
-    
+
     public void addSupportedRootTag(String rootTag)
     {
         supportedRootTags.add(rootTag);
+    }
+
+    public String getXPathExpression()
+    {
+        return xpathExpression;
+    }
+
+    public void setXPathExpression(String xpathExpression)
+    {
+        this.xpathExpression = xpathExpression;
     }
 }

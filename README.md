@@ -1,5 +1,5 @@
 spring-xom-unmarshaller
-============
+=======================
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d134d532488b44e5aaaf1b9775999035)](https://www.codacy.com/app/eggers-julian/spring-xom-unmarshaller?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=julian-eggers/spring-xom-unmarshaller&amp;utm_campaign=Badge_Grade)
@@ -8,18 +8,18 @@ spring-xom-unmarshaller
 
 Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 
+
 #### Maven
 ```xml
-<dependencies>
-	<dependency>
-		<groupId>com.itelg.spring</groupId>
-		<artifactId>spring-xom-unmarshaller</artifactId>
-		<version>0.1.1-RELEASE</version>
-	</dependency>
-</dependencies>
+<dependency>
+	<groupId>com.itelg.spring</groupId>
+	<artifactId>spring-xom-unmarshaller</artifactId>
+	<version>0.2.0-RELEASE</version>
+</dependency>
 ```
 
-#### Examples
+
+#### Configuration
 
 ##### Enable auto-configuration via annotation
 
@@ -40,7 +40,11 @@ public class Application
 }
 ```
 
-##### Parser: root-tag resolving via target-class (Root-Tag: integer)
+
+#### Parser resolving
+A matching parser can be resolved either via return-type, root-tag or an xpath-expression.
+
+##### Root-tag resolving via return-type (Root-Tag: integer)
 ```java
 @Component
 public class IntegerParser implements Parser<Integer>
@@ -53,7 +57,7 @@ public class IntegerParser implements Parser<Integer>
 }
 ```
 
-##### Parser: root-tag resolving via annotation (Root-Tag: text, blob or string)
+##### Root-tag resolving via annotation (Root-Tag: text, blob or string)
 ```java
 @Component
 @RootTagMatcher("text")
@@ -68,7 +72,7 @@ public class TextParser implements Parser<String>
 }
 ```
 
-##### Parser: disable resolving via annotation (Root-Tag: text)
+##### Disable type-resolving via annotation (Root-Tag: text)
 ```java
 @Component
 @RootTagMatcher("text")
@@ -82,6 +86,23 @@ public class TextParser implements Parser<String>
     }
 }
 ```
+
+##### Resolving via xpath-expression
+```java
+@Component
+@XPathExpressionMatcher("//response/customer")
+public class CustomerParser implements Parser<Customer>
+{
+    @Override
+    public Customer parse(Element rootElement)
+    {
+        Customer customer = new Customer();
+        customer.setId(XPathHelper.getPLong("//response/customer/id", rootElement));
+        return customer;
+    }
+}
+```
+
 
 #### Test-Support
 ```java
