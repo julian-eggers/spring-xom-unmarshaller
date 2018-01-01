@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class XomUnmarshallerTestUtilTest
     @Test
     public void testResolvesXml() throws IOException
     {
-        String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream());
+        String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream(), Charset.defaultCharset());
         Parser<?> parser = new DisabledRootTagByTypeParser();
         assertTrue(XomUnmarshallerTestUtil.resolves(parser, xml));
     }
@@ -30,7 +31,7 @@ public class XomUnmarshallerTestUtilTest
     @Test
     public void testResolvesXmlNot() throws IOException
     {
-        String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream());
+        String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream(), Charset.defaultCharset());
         Parser<?> parser = new RootTagByAnnotationParser();
         assertFalse(XomUnmarshallerTestUtil.resolves(parser, xml));
     }
