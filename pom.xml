@@ -5,7 +5,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>0.2.0-RELEASE</version>
+  <version>0.2.1-RELEASE</version>
 
   <properties>
     <!-- System -->
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.itelg</groupId>
       <artifactId>xpath-helper</artifactId>
-      <version>0.4.6-RELEASE</version>
+      <version>0.4.7-RELEASE</version>
     </dependency>
 
     <!-- Testing -->
