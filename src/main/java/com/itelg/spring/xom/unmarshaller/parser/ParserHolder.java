@@ -9,6 +9,7 @@ public class ParserHolder
     private Class<?> returnType;
     private List<String> supportedRootTags = new ArrayList<>();
     private String xpathExpression;
+    private String xpathExpressionValue;
 
     public Parser<?> getParser()
     {
@@ -48,5 +49,15 @@ public class ParserHolder
     public void setXPathExpression(String xpathExpression)
     {
         this.xpathExpression = xpathExpression;
+    }
+
+    public String getXpathExpressionValue()
+    {
+        return xpathExpressionValue;
+    }
+
+    public void setXpathExpressionValue(String xpathExpressionValue)
+    {
+        this.xpathExpressionValue = xpathExpressionValue;
     }
 }

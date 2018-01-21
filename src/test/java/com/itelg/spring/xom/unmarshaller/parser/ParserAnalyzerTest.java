@@ -13,6 +13,7 @@ import com.itelg.spring.xom.unmarshaller.test.parser.InvalidParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByAnnotationParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByTypeParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionCustomerParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueCustomerParser;
 
 public class ParserAnalyzerTest
 {
@@ -27,6 +28,7 @@ public class ParserAnalyzerTest
         assertEquals(1, holder.getSupportedRootTags().size());
         assertTrue(holder.getSupportedRootTags().contains("String"));
         assertNull(holder.getXPathExpression());
+        assertNull(holder.getXpathExpressionValue());
     }
 
     @Test
@@ -41,6 +43,7 @@ public class ParserAnalyzerTest
         assertTrue(holder.getSupportedRootTags().contains("Long"));
         assertTrue(holder.getSupportedRootTags().contains("Integer"));
         assertNull(holder.getXPathExpression());
+        assertNull(holder.getXpathExpressionValue());
     }
 
     @Test
@@ -54,6 +57,7 @@ public class ParserAnalyzerTest
         assertEquals(1, holder.getSupportedRootTags().size());
         assertTrue(holder.getSupportedRootTags().contains("Float"));
         assertNull(holder.getXPathExpression());
+        assertNull(holder.getXpathExpressionValue());
     }
 
     @Test
@@ -67,6 +71,21 @@ public class ParserAnalyzerTest
         assertEquals(1, holder.getSupportedRootTags().size());
         assertTrue(holder.getSupportedRootTags().contains("Customer"));
         assertEquals("//response/customer", holder.getXPathExpression());
+        assertNull(holder.getXpathExpressionValue());
+    }
+
+    @Test
+    public void testAnalyzeWithXPathExpressionValue()
+    {
+        Parser<?> parser = new XPathExpressionValueCustomerParser();
+        ParserHolder holder = ParserAnalyzer.analyze(parser);
+
+        assertEquals(parser, holder.getParser());
+        assertEquals(Customer.class, holder.getReturnType());
+        assertEquals(1, holder.getSupportedRootTags().size());
+        assertTrue(holder.getSupportedRootTags().contains("Customer"));
+        assertEquals("//response/@type", holder.getXPathExpression());
+        assertEquals("customer", holder.getXpathExpressionValue());
     }
 
     @Test

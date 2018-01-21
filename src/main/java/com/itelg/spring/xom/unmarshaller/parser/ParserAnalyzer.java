@@ -2,6 +2,8 @@ package com.itelg.spring.xom.unmarshaller.parser;
 
 import java.lang.reflect.Method;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.itelg.spring.xom.unmarshaller.parser.annotation.DisableRootTagTypeMatcher;
 import com.itelg.spring.xom.unmarshaller.parser.annotation.RootTagMatcher;
 import com.itelg.spring.xom.unmarshaller.parser.annotation.XPathExpressionMatcher;
@@ -59,6 +61,11 @@ public class ParserAnalyzer
         if (xPathMatcher != null)
         {
             holder.setXPathExpression(xPathMatcher.value());
+
+            if (StringUtils.isNotBlank(xPathMatcher.expressionValue()))
+            {
+                holder.setXpathExpressionValue(xPathMatcher.expressionValue());
+            }
         }
     }
 }

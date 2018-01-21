@@ -1,0 +1,6 @@
+<response type="order">
+  <succesful>true</succesful>
+  <data>
+    <id>456</id>
+  </data>
+</response>

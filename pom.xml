@@ -5,7 +5,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>0.2.1-RELEASE</version>
+  <version>0.2.2-RELEASE</version>
 
   <properties>
     <!-- System -->
@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <!-- Testing -->
-    <jacoco.version>0.7.9</jacoco.version>
+    <jacoco.version>0.8.0</jacoco.version>
     <powermock.version>1.7.3</powermock.version>
     <easymock.version>3.5.1</easymock.version>
     <!-- Build -->

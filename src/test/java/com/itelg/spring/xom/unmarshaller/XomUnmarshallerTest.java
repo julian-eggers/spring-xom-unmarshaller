@@ -27,6 +27,8 @@ import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByAnnotationParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByTypeParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionCustomerParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionOrderParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueCustomerParser;
+import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueOrderParser;
 
 public class XomUnmarshallerTest
 {
@@ -41,6 +43,8 @@ public class XomUnmarshallerTest
         parsers.add(new DisabledRootTagByTypeParser());
         parsers.add(new XPathExpressionCustomerParser());
         parsers.add(new XPathExpressionOrderParser());
+        parsers.add(new XPathExpressionValueCustomerParser());
+        parsers.add(new XPathExpressionValueOrderParser());
         unmarshaller = new XomUnmarshaller(parsers);
     }
 
@@ -128,7 +132,7 @@ public class XomUnmarshallerTest
     @Test
     public void testUnmarshallWithXPathExpressionAndCustomer() throws IOException
     {
-        try (InputStream inputStream = new ClassPathResource("response1.xml").getInputStream())
+        try (InputStream inputStream = new ClassPathResource("response1-customer.xml").getInputStream())
         {
             Customer value = (Customer) unmarshaller.unmarshal(new StreamSource(inputStream));
             assertEquals(123, value.getId());
@@ -138,7 +142,27 @@ public class XomUnmarshallerTest
     @Test
     public void testUnmarshallWithXPathExpressionAndOrder() throws IOException
     {
-        try (InputStream inputStream = new ClassPathResource("response2.xml").getInputStream())
+        try (InputStream inputStream = new ClassPathResource("response1-order.xml").getInputStream())
+        {
+            Order value = (Order) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(456, value.getId());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithXPathExpressionValueAndCustomer() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("response2-customer.xml").getInputStream())
+        {
+            Customer value = (Customer) unmarshaller.unmarshal(new StreamSource(inputStream));
+            assertEquals(123, value.getId());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithXPathExpressionValueAndOrder() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("response2-order.xml").getInputStream())
         {
             Order value = (Order) unmarshaller.unmarshal(new StreamSource(inputStream));
             assertEquals(456, value.getId());

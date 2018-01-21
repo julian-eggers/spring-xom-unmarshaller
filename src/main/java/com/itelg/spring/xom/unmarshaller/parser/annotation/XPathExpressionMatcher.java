@@ -10,5 +10,15 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface XPathExpressionMatcher
 {
+    /**
+     * Expression
+     *
+     */
     String value();
+
+    /**
+     * Expression-value (optional)
+     *
+     */
+    String expressionValue() default "";
 }
