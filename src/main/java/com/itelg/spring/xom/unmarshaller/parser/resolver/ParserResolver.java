@@ -2,6 +2,7 @@ package com.itelg.spring.xom.unmarshaller.parser.resolver;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
@@ -25,7 +26,20 @@ public class ParserResolver
             // Resolve via xpath-expression
             if (holder.getXPathExpression() != null && XPathHelper.hasNode(holder.getXPathExpression(), rootElement))
             {
-                return holder.getParser();
+                if (holder.getXpathExpressionValue() == null)
+                {
+                    return holder.getParser();
+                }
+                // Resolve via xpath-expression and value
+                else
+                {
+                    String value = XPathHelper.getString(holder.getXPathExpression(), rootElement);
+
+                    if (StringUtils.equals(holder.getXpathExpressionValue(), value))
+                    {
+                        return holder.getParser();
+                    }
+                }
             }
 
             // Resolve via root-tag

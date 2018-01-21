@@ -1,0 +1,6 @@
+<response type="customer">
+  <succesful>true</succesful>
+  <data>
+    <id>123</id>
+  </data>
+</response>
