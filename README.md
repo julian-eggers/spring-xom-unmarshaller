@@ -102,6 +102,22 @@ public class CustomerParser implements Parser<Customer>
 }
 ```
 
+##### Resolving via xpath-expression-value
+```java
+@Component
+@XPathExpressionMatcher(value = "//response/@type", expressionValue = "customer")
+public class XPathExpressionValueCustomerParser implements Parser<Customer>
+{
+    @Override
+    public Customer parse(Element rootElement)
+    {
+        Customer customer = new Customer();
+        customer.setId(XPathHelper.getPLong("//response/data/id", rootElement));
+        return customer;
+    }
+}
+```
+
 
 #### Test-Support
 ```java
