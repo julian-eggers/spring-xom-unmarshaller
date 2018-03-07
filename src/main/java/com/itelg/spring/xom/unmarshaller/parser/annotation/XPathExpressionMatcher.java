@@ -13,12 +13,14 @@ public @interface XPathExpressionMatcher
     /**
      * Expression
      *
+     * @return expression
      */
     String value();
 
     /**
      * Expression-value (optional)
      *
+     * @return expression-value
      */
     String expressionValue() default "";
 }
