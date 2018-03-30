@@ -1,7 +1,7 @@
 spring-xom-unmarshaller
 =======================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller)
+[![Maven Central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/itelg/spring/spring-xom-unmarshaller/maven-metadata.xml.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.itelg.spring%22%20AND%20a%3A%22spring-xom-unmarshaller%22)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d134d532488b44e5aaaf1b9775999035)](https://www.codacy.com/app/eggers-julian/spring-xom-unmarshaller)
 [![Coverage Status](https://coveralls.io/repos/julian-eggers/spring-xom-unmarshaller/badge.svg)](https://coveralls.io/r/julian-eggers/spring-xom-unmarshaller)
 [![Build Status](https://travis-ci.org/julian-eggers/spring-xom-unmarshaller.svg?branch=master)](https://travis-ci.org/julian-eggers/spring-xom-unmarshaller)
