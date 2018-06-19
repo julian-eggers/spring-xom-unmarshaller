@@ -85,7 +85,7 @@ public class XomUnmarshallerTest
         catch (Exception e)
         {
             assertEquals(UnmarshallingFailureException.class, e.getClass());
-            assertEquals("XML document structures must start and end within the same entity.; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
+            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
         }
     }
 

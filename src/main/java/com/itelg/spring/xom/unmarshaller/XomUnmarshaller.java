@@ -63,7 +63,7 @@ public class XomUnmarshaller implements Unmarshaller
         }
         catch (Exception e)
         {
-            throw new UnmarshallingFailureException(e.getMessage(), e);
+            throw new UnmarshallingFailureException("Could not unmarshal", e);
         }
     }
 }
