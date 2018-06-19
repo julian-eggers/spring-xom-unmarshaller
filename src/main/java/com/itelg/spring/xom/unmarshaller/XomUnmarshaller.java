@@ -11,6 +11,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.oxm.XmlMappingException;
+import org.springframework.util.Assert;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
 import com.itelg.spring.xom.unmarshaller.parser.ParserAnalyzer;
@@ -26,6 +27,8 @@ public class XomUnmarshaller implements Unmarshaller
 
     public XomUnmarshaller(List<Parser<?>> parsers)
     {
+        Assert.notEmpty(parsers, "'parsers' must not be empty");
+
         for (Parser<?> parser : parsers)
         {
             this.parsers.add(ParserAnalyzer.analyze(parser));

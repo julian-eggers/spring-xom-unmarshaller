@@ -20,7 +20,6 @@ import org.springframework.oxm.XmlMappingException;
 
 import com.itelg.spring.xom.unmarshaller.XomUnmarshaller;
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
-import com.itelg.spring.xom.unmarshaller.utils.ChainedUnmarshaller;
 import com.itelg.xpath.helper.XPathHelper;
 
 import nu.xom.Element;
@@ -34,6 +33,34 @@ public class ChainedUnmarshallerTest
     private String stringXml = "<String><value>abc</value></String>";
 
     private String integerXml = "<Integer><value>123</value></Integer>";
+
+    @Test
+    public void testConstructorWithNullList()
+    {
+        try
+        {
+            new ChainedUnmarshaller(null);
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'unmarshallers' must not be empty", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithEmptyList()
+    {
+        try
+        {
+            new ChainedUnmarshaller(Collections.emptyList());
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'unmarshallers' must not be empty", e.getMessage());
+        }
+    }
 
     @Test
     public void testSupports()
@@ -57,16 +84,15 @@ public class ChainedUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshalWithException()
+    public void testUnmarshalWithException() throws XmlMappingException, IOException
     {
         try
         {
             stringIntegerUnmarshaller.unmarshal(createSource("123"));
             fail("exception expected");
         }
-        catch (Exception e)
+        catch (UnmarshallingFailureException e)
         {
-            assertEquals(UnmarshallingFailureException.class, e.getClass());
             assertEquals("Could not unmarshal (Errors: Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1,Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1)", e.getMessage());
         }
     }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
@@ -46,6 +47,34 @@ public class XomUnmarshallerTest
         parsers.add(new XPathExpressionValueCustomerParser());
         parsers.add(new XPathExpressionValueOrderParser());
         unmarshaller = new XomUnmarshaller(parsers);
+    }
+
+    @Test
+    public void testConstructorWithNullList()
+    {
+        try
+        {
+            new XomUnmarshaller(null);
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'parsers' must not be empty", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithEmptyList()
+    {
+        try
+        {
+            new XomUnmarshaller(Collections.emptyList());
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'parsers' must not be empty", e.getMessage());
+        }
     }
 
     @Test
