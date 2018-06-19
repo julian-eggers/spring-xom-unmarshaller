@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
@@ -49,6 +50,34 @@ public class XomUnmarshallerTest
     }
 
     @Test
+    public void testConstructorWithNullList()
+    {
+        try
+        {
+            new XomUnmarshaller(null);
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'parsers' must not be empty", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithEmptyList()
+    {
+        try
+        {
+            new XomUnmarshaller(Collections.emptyList());
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'parsers' must not be empty", e.getMessage());
+        }
+    }
+
+    @Test
     public void testSupports()
     {
         assertTrue(unmarshaller.supports(String.class));
@@ -85,7 +114,7 @@ public class XomUnmarshallerTest
         catch (Exception e)
         {
             assertEquals(UnmarshallingFailureException.class, e.getClass());
-            assertEquals("XML document structures must start and end within the same entity.; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
+            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
         }
     }
 
