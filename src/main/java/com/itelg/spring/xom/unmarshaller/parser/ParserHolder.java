@@ -1,13 +1,15 @@
 package com.itelg.spring.xom.unmarshaller.parser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ParserHolder
 {
     private Parser<?> parser;
     private Class<?> returnType;
-    private List<String> supportedRootTags = new ArrayList<>();
+    private Set<String> supportedRootTags = new HashSet<>();
     private String xpathExpression;
     private String xpathExpressionValue;
 
@@ -33,7 +35,7 @@ public class ParserHolder
 
     public List<String> getSupportedRootTags()
     {
-        return supportedRootTags;
+        return new ArrayList<>(supportedRootTags);
     }
 
     public void addSupportedRootTag(String rootTag)
