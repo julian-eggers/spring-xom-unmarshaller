@@ -35,12 +35,21 @@ public class ParserAnalyzer
             }
         }
 
+        for (Method method : parser.getClass().getSuperclass().getDeclaredMethods())
+        {
+            if (method.getName().equals("parse") && !method.getReturnType().equals(Object.class))
+            {
+                return method.getReturnType();
+            }
+        }
+
         throw new RuntimeException("Invalid parser-implementation!");
     }
 
     private static void appendRootTagByType(ParserHolder holder)
     {
-        if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null)
+        if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null &&
+                holder.getParser().getClass().getSuperclass().getAnnotation(DisableRootTagTypeMatcher.class) == null)
         {
             holder.addSupportedRootTag(holder.getReturnType().getSimpleName());
         }
@@ -52,19 +61,36 @@ public class ParserAnalyzer
         {
             holder.addSupportedRootTag(rootTagMatcher.value());
         }
+
+        for (RootTagMatcher rootTagMatcher : holder.getParser().getClass().getSuperclass().getAnnotationsByType(RootTagMatcher.class))
+        {
+            holder.addSupportedRootTag(rootTagMatcher.value());
+        }
     }
 
     private static void appendXPathExpression(ParserHolder holder)
     {
-        XPathExpressionMatcher xPathMatcher = holder.getParser().getClass().getAnnotation(XPathExpressionMatcher.class);
+        XPathExpressionMatcher classAnnotation = holder.getParser().getClass().getAnnotation(XPathExpressionMatcher.class);
 
-        if (xPathMatcher != null)
+        if (classAnnotation != null)
         {
-            holder.setXPathExpression(xPathMatcher.value());
+            holder.setXPathExpression(classAnnotation.value());
 
-            if (StringUtils.isNotBlank(xPathMatcher.expressionValue()))
+            if (StringUtils.isNotBlank(classAnnotation.expressionValue()))
             {
-                holder.setXpathExpressionValue(xPathMatcher.expressionValue());
+                holder.setXpathExpressionValue(classAnnotation.expressionValue());
+            }
+        }
+
+        XPathExpressionMatcher superclassAnnotation = holder.getParser().getClass().getSuperclass().getAnnotation(XPathExpressionMatcher.class);
+
+        if (superclassAnnotation != null)
+        {
+            holder.setXPathExpression(superclassAnnotation.value());
+
+            if (StringUtils.isNotBlank(superclassAnnotation.expressionValue()))
+            {
+                holder.setXpathExpressionValue(superclassAnnotation.expressionValue());
             }
         }
     }
