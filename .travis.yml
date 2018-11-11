@@ -2,6 +2,7 @@ language: java
 
 jdk:
   - oraclejdk8
+  - oraclejdk11  
 
 cache:
   directories:
@@ -10,8 +11,8 @@ cache:
 install: mvn package -Dgpg.skip=true
   
 before_install:
-  - wget -O ~/codacy-coverage-reporter-assembly.jar https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.3/codacy-coverage-reporter-4.0.3-assembly.jar
+  - wget -O ~/codacy-coverage-reporter-assembly.jar https://github.com/codacy/codacy-coverage-reporter/releases/download/4.0.5/codacy-coverage-reporter-4.0.5-assembly.jar
 
 after_success:
   - mvn coveralls:report
-  - java -cp ~/codacy-coverage-reporter-assembly.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
+  - java -jar ~/codacy-coverage-reporter-assembly.jar report -l Java -r target/site/jacoco/jacoco.xml
