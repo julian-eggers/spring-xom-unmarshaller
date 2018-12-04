@@ -16,7 +16,7 @@
     <!-- Testing -->
     <jacoco.version>0.8.2</jacoco.version>
     <powermock.version>2.0.0-RC.4</powermock.version>
-    <easymock.version>4.0.1</easymock.version>
+    <easymock.version>4.0.2</easymock.version>
     <!-- Build -->
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
