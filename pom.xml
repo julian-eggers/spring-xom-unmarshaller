@@ -28,7 +28,7 @@
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-scm-provider-gitexe.version>1.11.1</maven-scm-provider-gitexe.version>
     <exists-maven-plugin.version>0.0.6</exists-maven-plugin.version>
-    <github-release-plugin.version>1.2.0</github-release-plugin.version>
+    <github-release-plugin.version>1.4.0</github-release-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
   </properties>
 
