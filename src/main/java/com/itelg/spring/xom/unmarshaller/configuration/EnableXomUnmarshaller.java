@@ -13,5 +13,5 @@ import org.springframework.context.annotation.Import;
 @Import(SpringXomUnmarshallerConfiguration.class)
 public @interface EnableXomUnmarshaller
 {
-
+    // nothing
 }

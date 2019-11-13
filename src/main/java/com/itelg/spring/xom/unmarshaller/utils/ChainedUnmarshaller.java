@@ -14,7 +14,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
-import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.Assert;
 
 public class ChainedUnmarshaller implements Unmarshaller
@@ -42,7 +41,7 @@ public class ChainedUnmarshaller implements Unmarshaller
     }
 
     @Override
-    public Object unmarshal(Source source) throws IOException, XmlMappingException
+    public Object unmarshal(Source source) throws IOException
     {
         List<String> errors = new ArrayList<>();
         byte[] byteSource = toByteArray(source);

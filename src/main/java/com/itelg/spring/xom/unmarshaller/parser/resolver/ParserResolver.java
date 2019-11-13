@@ -30,15 +30,13 @@ public class ParserResolver
                 {
                     return holder.getParser();
                 }
-                // Resolve via xpath-expression and value
-                else
-                {
-                    String value = XPathHelper.getString(holder.getXPathExpression(), rootElement);
 
-                    if (StringUtils.equals(holder.getXpathExpressionValue(), value))
-                    {
-                        return holder.getParser();
-                    }
+                // Resolve via xpath-expression and value
+                String value = XPathHelper.getString(holder.getXPathExpression(), rootElement);
+
+                if (StringUtils.equals(holder.getXpathExpressionValue(), value))
+                {
+                    return holder.getParser();
                 }
             }
 

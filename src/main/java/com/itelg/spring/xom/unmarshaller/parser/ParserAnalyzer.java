@@ -43,13 +43,15 @@ public class ParserAnalyzer
             }
         }
 
-        throw new RuntimeException("Invalid parser-implementation!");
+        throw new IllegalArgumentException("Invalid parser-implementation!");
     }
 
     private static void appendRootTagByType(ParserHolder holder)
     {
-        if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null &&
-                holder.getParser().getClass().getSuperclass().getAnnotation(DisableRootTagTypeMatcher.class) == null)
+        if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null && holder.getParser()
+                .getClass()
+                .getSuperclass()
+                .getAnnotation(DisableRootTagTypeMatcher.class) == null)
         {
             holder.addSupportedRootTag(holder.getReturnType().getSimpleName());
         }

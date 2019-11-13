@@ -16,7 +16,7 @@ public class SpringXomUnmarshallerConfigurationTest
     @Test
     public void testXomUnmarshaller()
     {
-        XomUnmarshaller xomUnmarshaller = configuration.xomUnmarshaller(Collections.singletonList(new RootTagByAnnotationParser()));
+        XomUnmarshaller xomUnmarshaller = configuration.xomUnmarshaller(Collections.singletonList(new RootTagByAnnotationParser()), xml -> xml);
         assertTrue(xomUnmarshaller.supports(Long.class));
     }
 }

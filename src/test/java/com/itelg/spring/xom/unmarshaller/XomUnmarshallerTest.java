@@ -1,5 +1,6 @@
 package com.itelg.spring.xom.unmarshaller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,7 +51,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testConstructorWithNullList()
+    public void testConstructorWithParsersNull()
     {
         try
         {
@@ -64,7 +65,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testConstructorWithEmptyList()
+    public void testConstructorWithParsersEmpty()
     {
         try
         {
@@ -74,6 +75,20 @@ public class XomUnmarshallerTest
         catch (IllegalArgumentException e)
         {
             assertEquals("'parsers' must not be empty", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithPreParseInterceptorNull()
+    {
+        try
+        {
+            new XomUnmarshaller(Collections.singletonList(new RootTagByTypeParser()), null);
+            fail("exception expected");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("'preParseInterceptor' must not be null", e.getMessage());
         }
     }
 
@@ -89,7 +104,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownParser() throws IOException
+    public void testUnmarshallWithUnknownParser()
     {
         try (InputStream inputStream = new ClassPathResource("double.xml").getInputStream())
         {
@@ -104,7 +119,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownException() throws IOException
+    public void testUnmarshallWithUnknownException()
     {
         try (InputStream inputStream = new ClassPathResource("invalid.xml").getInputStream())
         {
@@ -114,7 +129,8 @@ public class XomUnmarshallerTest
         catch (Exception e)
         {
             assertEquals(UnmarshallingFailureException.class, e.getClass());
-            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
+            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e
+                    .getMessage());
         }
     }
 
@@ -195,6 +211,17 @@ public class XomUnmarshallerTest
         {
             Order value = (Order) unmarshaller.unmarshal(new StreamSource(inputStream));
             assertEquals(456, value.getId());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithPreParseInterceptor() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("string.xml").getInputStream())
+        {
+            var preParseInterceptorUnmarshaller = new XomUnmarshaller(Collections
+                    .singletonList(new RootTagByTypeParser()), xml -> new String(xml).replace("test", "test123").getBytes());
+            assertThat(preParseInterceptorUnmarshaller.unmarshal(new StreamSource(inputStream))).isEqualTo("test123");
         }
     }
 }
