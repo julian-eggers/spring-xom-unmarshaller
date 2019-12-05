@@ -13,7 +13,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 <dependency>
   <groupId>com.itelg.spring</groupId>
   <artifactId>spring-xom-unmarshaller</artifactId>
-  <version>1.4.0-RC1</version>
+  <version>1.4.0</version>
 </dependency>
 ```
 
@@ -115,6 +115,29 @@ public class XPathExpressionValueCustomerParser implements Parser<Customer>
         customer.setId(XPathHelper.getPLong("//response/data/id", rootElement));
         return customer;
     }
+}
+```
+
+
+#### Additional features
+
+##### Pre-parse interceptor
+If you have to work with invalid XML`s you can create an interceptor to remove invalid chars or to fix the structure.
+
+```java
+@Bean
+public XomUnmarshaller xomUnmarshaller(List<Parser<?>> parsers)
+{
+    return new XomUnmarshaller(parsers, xmlChars ->
+    {
+        var xml = new String(xmlChars);
+        xml = xml.replace("&#x1e;", "");
+        xml = xml.replace("&#x1f;", "");
+        xml = xml.replace("&#x0;", "");
+        xml = xml.replace("&#xb;", "");
+
+        return xml.getBytes();
+    });
 }
 ```
 

@@ -58,19 +58,20 @@ public class XomUnmarshaller implements Unmarshaller
     @Override
     public Object unmarshal(Source source) throws IOException
     {
-        StreamSource streamSource = (StreamSource) source;
-
-        try (InputStream inputStream = streamSource.getInputStream())
+        try (InputStream inputStream = ((StreamSource) source).getInputStream())
         {
-            var originalXml = IOUtils.toByteArray(inputStream);
-            var interceptedXml = preParseInterceptor.intercept(originalXml);
-
-            try (InputStream interceptedInputStream = new ByteArrayInputStream(interceptedXml))
+            if (preParseInterceptor != null)
             {
-                var rootElement = DocumentHelper.getRootElement(interceptedInputStream);
-                var parser = ParserResolver.resolve(parsers, rootElement);
-                return parser.parse(rootElement);
+                var originalXml = IOUtils.toByteArray(inputStream);
+                var interceptedXml = preParseInterceptor.intercept(originalXml);
+
+                try (InputStream interceptedInputStream = new ByteArrayInputStream(interceptedXml))
+                {
+                    return parse(interceptedInputStream);
+                }
             }
+
+            return parse(inputStream);
         }
         catch (UnmarshallingFailureException e)
         {
@@ -80,5 +81,12 @@ public class XomUnmarshaller implements Unmarshaller
         {
             throw new UnmarshallingFailureException("Could not unmarshal", e);
         }
+    }
+
+    private Object parse(InputStream inputStream) throws Exception
+    {
+        var rootElement = DocumentHelper.getRootElement(inputStream);
+        var parser = ParserResolver.resolve(parsers, rootElement);
+        return parser.parse(rootElement);
     }
 }

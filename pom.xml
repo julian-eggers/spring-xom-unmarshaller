@@ -7,7 +7,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>1.4.0-RC1</version>
+  <version>1.4.0-RC2</version>
 
   <properties>
     <!-- System -->
@@ -155,6 +155,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven-javadoc-plugin.version}</version>
+        <configuration>
+          <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
