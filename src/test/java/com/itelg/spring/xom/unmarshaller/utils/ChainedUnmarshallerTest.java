@@ -1,5 +1,6 @@
 package com.itelg.spring.xom.unmarshaller.utils;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -37,29 +38,14 @@ public class ChainedUnmarshallerTest
     @Test
     public void testConstructorWithNullList()
     {
-        try
-        {
-            new ChainedUnmarshaller(null);
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'unmarshallers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new ChainedUnmarshaller(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("'unmarshallers' must not be empty");
     }
 
     @Test
     public void testConstructorWithEmptyList()
     {
-        try
-        {
-            new ChainedUnmarshaller(Collections.emptyList());
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'unmarshallers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new ChainedUnmarshaller(Collections.emptyList())).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'unmarshallers' must not be empty");
     }
 
     @Test
@@ -93,7 +79,8 @@ public class ChainedUnmarshallerTest
         }
         catch (UnmarshallingFailureException e)
         {
-            assertEquals("Could not unmarshal (Errors: Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1,Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1)", e.getMessage());
+            assertEquals("Could not unmarshal (Errors: Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1,Could not unmarshal; nested exception is nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1)", e
+                    .getMessage());
         }
     }
 

@@ -1,11 +1,13 @@
 package com.itelg.spring.xom.unmarshaller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -53,43 +55,21 @@ public class XomUnmarshallerTest
     @Test
     public void testConstructorWithParsersNull()
     {
-        try
-        {
-            new XomUnmarshaller(null);
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'parsers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new XomUnmarshaller(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("'parsers' must not be empty");
     }
 
     @Test
     public void testConstructorWithParsersEmpty()
     {
-        try
-        {
-            new XomUnmarshaller(Collections.emptyList());
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'parsers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new XomUnmarshaller(Collections.emptyList())).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'parsers' must not be empty");
     }
 
     @Test
     public void testConstructorWithPreParseInterceptorNull()
     {
-        try
-        {
-            new XomUnmarshaller(Collections.singletonList(new RootTagByTypeParser()), null);
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'preParseInterceptor' must not be null", e.getMessage());
-        }
+        assertThatThrownBy(() -> new XomUnmarshaller(Collections.singletonList(new RootTagByTypeParser()), null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'preParseInterceptor' must not be null");
     }
 
     @Test
@@ -121,7 +101,7 @@ public class XomUnmarshallerTest
     @Test
     public void testUnmarshallWithUnknownException()
     {
-        try (InputStream inputStream = new ClassPathResource("invalid.xml").getInputStream())
+        try (InputStream inputStream = new ByteArrayInputStream("<data>".getBytes()))
         {
             unmarshaller.unmarshal(new StreamSource(inputStream));
             fail("Exception expected");
