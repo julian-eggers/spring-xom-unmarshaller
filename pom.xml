@@ -5,7 +5,7 @@
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
   <url>https://github.com/julian-eggers/spring-xom-unmarshaller</url>
-  <version>1.4.0-RC3</version>
+  <version>1.4.0-RC4</version>
 
   <properties>
     <!-- System -->
@@ -189,6 +189,13 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <version>${maven-gpg-plugin.version}</version>
+        <configuration>
+          <!-- Prevent `gpg` from using pinentry programs -->
+          <gpgArguments>
+            <arg>--pinentry-mode</arg>
+            <arg>loopback</arg>
+          </gpgArguments>
+        </configuration>
         <executions>
           <execution>
             <id>sign-artifacts</id>
