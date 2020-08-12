@@ -1,10 +1,13 @@
 package com.itelg.spring.xom.unmarshaller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -50,31 +53,23 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testConstructorWithNullList()
+    public void testConstructorWithParsersNull()
     {
-        try
-        {
-            new XomUnmarshaller(null);
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'parsers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new XomUnmarshaller(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("'parsers' must not be empty");
     }
 
     @Test
-    public void testConstructorWithEmptyList()
+    public void testConstructorWithParsersEmpty()
     {
-        try
-        {
-            new XomUnmarshaller(Collections.emptyList());
-            fail("exception expected");
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertEquals("'parsers' must not be empty", e.getMessage());
-        }
+        assertThatThrownBy(() -> new XomUnmarshaller(Collections.emptyList())).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'parsers' must not be empty");
+    }
+
+    @Test
+    public void testConstructorWithPreParseInterceptorNull()
+    {
+        assertThatThrownBy(() -> new XomUnmarshaller(Collections.singletonList(new RootTagByTypeParser()), null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'preParseInterceptor' must not be null");
     }
 
     @Test
@@ -89,7 +84,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownParser() throws IOException
+    public void testUnmarshallWithUnknownParser()
     {
         try (InputStream inputStream = new ClassPathResource("double.xml").getInputStream())
         {
@@ -104,9 +99,9 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownException() throws IOException
+    public void testUnmarshallWithUnknownException()
     {
-        try (InputStream inputStream = new ClassPathResource("invalid.xml").getInputStream())
+        try (InputStream inputStream = new ByteArrayInputStream("<data>".getBytes()))
         {
             unmarshaller.unmarshal(new StreamSource(inputStream));
             fail("Exception expected");
@@ -114,7 +109,8 @@ public class XomUnmarshallerTest
         catch (Exception e)
         {
             assertEquals(UnmarshallingFailureException.class, e.getClass());
-            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e.getMessage());
+            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e
+                    .getMessage());
         }
     }
 
@@ -195,6 +191,17 @@ public class XomUnmarshallerTest
         {
             Order value = (Order) unmarshaller.unmarshal(new StreamSource(inputStream));
             assertEquals(456, value.getId());
+        }
+    }
+
+    @Test
+    public void testUnmarshallWithPreParseInterceptor() throws IOException
+    {
+        try (InputStream inputStream = new ClassPathResource("string.xml").getInputStream())
+        {
+            var preParseInterceptorUnmarshaller = new XomUnmarshaller(Collections
+                    .singletonList(new RootTagByTypeParser()), xml -> new String(xml).replace("test", "test123").getBytes());
+            assertThat(preParseInterceptorUnmarshaller.unmarshal(new StreamSource(inputStream))).isEqualTo("test123");
         }
     }
 }

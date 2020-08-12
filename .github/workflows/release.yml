@@ -1,0 +1,45 @@
+name: release
+ 
+on:
+  push:
+    branches:
+      - master
+ 
+jobs:
+  release:
+    env:
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup-java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
+ 
+      - name: setup-github-release
+        run: sed -i -e 's/<\/servers>/<server><id>github<\/id><username>x-access-token<\/username><password>${GITHUB_TOKEN}<\/password><\/server><\/servers>/g' /home/runner/.m2/settings.xml
+ 
+      - name: setup-gpg
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: echo ${GPG_PRIVATE_KEY} | base64 --decode -i | gpg --batch --import
+ 
+      - name: checkout
+        uses: actions/checkout@v1
+ 
+      - name: caching
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+ 
+      - name: deploy
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+        run: export GPG_TTY=$(tty) && mvn clean verify deploy -Dgpg.executable=gpg -Dgpg.passphrase=${GPG_PASSPHRASE}

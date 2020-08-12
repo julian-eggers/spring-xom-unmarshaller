@@ -25,7 +25,7 @@ public class XomUnmarshallerTestUtil
             Element rootElement = DocumentHelper.getRootElement(inputStream);
             return resolves(parser, rootElement);
         }
-        catch (Exception e)
+        catch (@SuppressWarnings("unused") Exception e)
         {
             return false;
         }
@@ -40,7 +40,7 @@ public class XomUnmarshallerTestUtil
             ParserResolver.resolve(Collections.singletonList(holder), rootElement);
             return true;
         }
-        catch (Exception e)
+        catch (@SuppressWarnings("unused") Exception e)
         {
             return false;
         }

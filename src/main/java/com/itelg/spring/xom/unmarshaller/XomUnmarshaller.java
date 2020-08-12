@@ -1,5 +1,6 @@
 package com.itelg.spring.xom.unmarshaller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,37 +9,42 @@ import java.util.List;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
-import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.Assert;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
 import com.itelg.spring.xom.unmarshaller.parser.ParserAnalyzer;
 import com.itelg.spring.xom.unmarshaller.parser.ParserHolder;
+import com.itelg.spring.xom.unmarshaller.parser.PreParseInterceptor;
 import com.itelg.spring.xom.unmarshaller.parser.resolver.ParserResolver;
 import com.itelg.xpath.helper.DocumentHelper;
-
-import nu.xom.Element;
 
 public class XomUnmarshaller implements Unmarshaller
 {
     private List<ParserHolder> parsers = new ArrayList<>();
 
-    public XomUnmarshaller(List<Parser<?>> parsers)
+    private PreParseInterceptor preParseInterceptor;
+
+    public XomUnmarshaller(List<Parser<?>> parsers, PreParseInterceptor preParseInterceptor)
     {
         Assert.notEmpty(parsers, "'parsers' must not be empty");
+        Assert.notNull(preParseInterceptor, "'preParseInterceptor' must not be null");
 
-        for (Parser<?> parser : parsers)
-        {
-            this.parsers.add(ParserAnalyzer.analyze(parser));
-        }
+        parsers.forEach(parser -> this.parsers.add(ParserAnalyzer.analyze(parser)));
+        this.preParseInterceptor = preParseInterceptor;
+    }
+
+    public XomUnmarshaller(List<Parser<?>> parsers)
+    {
+        this(parsers, xml -> xml);
     }
 
     @Override
     public boolean supports(Class<?> clazz)
     {
-        for (ParserHolder parser : parsers)
+        for (var parser : parsers)
         {
             if (parser.getReturnType().isAssignableFrom(clazz))
             {
@@ -50,15 +56,22 @@ public class XomUnmarshaller implements Unmarshaller
     }
 
     @Override
-    public Object unmarshal(Source source) throws IOException, XmlMappingException
+    public Object unmarshal(Source source) throws IOException
     {
-        StreamSource streamSource = (StreamSource) source;
-
-        try (InputStream inputStream = streamSource.getInputStream())
+        try (InputStream inputStream = ((StreamSource) source).getInputStream())
         {
-            Element rootElement = DocumentHelper.getRootElement(inputStream);
-            Parser<?> parser = ParserResolver.resolve(parsers, rootElement);
-            return parser.parse(rootElement);
+            if (preParseInterceptor != null)
+            {
+                var originalXml = IOUtils.toByteArray(inputStream);
+                var interceptedXml = preParseInterceptor.intercept(originalXml);
+
+                try (InputStream interceptedInputStream = new ByteArrayInputStream(interceptedXml))
+                {
+                    return parse(interceptedInputStream);
+                }
+            }
+
+            return parse(inputStream);
         }
         catch (UnmarshallingFailureException e)
         {
@@ -68,5 +81,12 @@ public class XomUnmarshaller implements Unmarshaller
         {
             throw new UnmarshallingFailureException("Could not unmarshal", e);
         }
+    }
+
+    private Object parse(InputStream inputStream) throws Exception
+    {
+        var rootElement = DocumentHelper.getRootElement(inputStream);
+        var parser = ParserResolver.resolve(parsers, rootElement);
+        return parser.parse(rootElement);
     }
 }
