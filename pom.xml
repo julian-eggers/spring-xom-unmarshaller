@@ -33,7 +33,7 @@
     <github-release-plugin.version>1.4.0</github-release-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     <!-- Other -->
-    <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+    <spring-boot.version>2.4.1</spring-boot.version>
     <spring.version>5.2.8.RELEASE</spring.version>
     <spring-amqp.version>2.2.9.RELEASE</spring-amqp.version>
     <xpath-helper.version>0.6.0</xpath-helper.version>
