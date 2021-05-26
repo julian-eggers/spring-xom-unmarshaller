@@ -37,7 +37,7 @@
     <spring.version>5.2.8.RELEASE</spring.version>
     <spring-amqp.version>2.2.9.RELEASE</spring-amqp.version>
     <xpath-helper.version>0.6.0</xpath-helper.version>
-    <commons-io.version>2.7</commons-io.version>
+    <commons-io.version>2.9.0</commons-io.version>
   </properties>
 
   <dependencies>
