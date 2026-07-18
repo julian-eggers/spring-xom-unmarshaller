@@ -1,20 +1,20 @@
 package com.itelg.spring.xom.unmarshaller.configuration;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.itelg.spring.xom.unmarshaller.XomUnmarshaller;
 import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByAnnotationParser;
 
-public class SpringXomUnmarshallerConfigurationTest
+class SpringXomUnmarshallerConfigurationTest
 {
     private SpringXomUnmarshallerConfiguration configuration = new SpringXomUnmarshallerConfiguration();
 
     @Test
-    public void testXomUnmarshaller()
+    void testXomUnmarshaller()
     {
         XomUnmarshaller xomUnmarshaller = configuration.xomUnmarshaller(Collections.singletonList(new RootTagByAnnotationParser()));
         assertTrue(xomUnmarshaller.supports(Long.class));

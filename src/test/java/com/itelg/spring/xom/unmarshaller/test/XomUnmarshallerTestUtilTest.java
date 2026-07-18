@@ -1,14 +1,14 @@
 package com.itelg.spring.xom.unmarshaller.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import com.itelg.spring.xom.unmarshaller.parser.Parser;
@@ -18,10 +18,10 @@ import com.itelg.xpath.helper.DocumentHelper;
 
 import nu.xom.Element;
 
-public class XomUnmarshallerTestUtilTest
+class XomUnmarshallerTestUtilTest
 {
     @Test
-    public void testResolvesXml() throws IOException
+    void testResolvesXml() throws IOException
     {
         String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream(), Charset.defaultCharset());
         Parser<?> parser = new DisabledRootTagByTypeParser();
@@ -29,7 +29,7 @@ public class XomUnmarshallerTestUtilTest
     }
 
     @Test
-    public void testResolvesXmlNot() throws IOException
+    void testResolvesXmlNot() throws IOException
     {
         String xml = IOUtils.toString(new ClassPathResource("float.xml").getInputStream(), Charset.defaultCharset());
         Parser<?> parser = new RootTagByAnnotationParser();
@@ -37,14 +37,14 @@ public class XomUnmarshallerTestUtilTest
     }
 
     @Test
-    public void testResolvesXmlInvalid()
+    void testResolvesXmlInvalid()
     {
         Parser<?> parser = new DisabledRootTagByTypeParser();
         assertFalse(XomUnmarshallerTestUtil.resolves(parser, "invalid xml"));
     }
 
     @Test
-    public void testResolvesElement() throws Exception
+    void testResolvesElement() throws Exception
     {
         try (InputStream inputStream = new ClassPathResource("float.xml").getInputStream())
         {
@@ -55,7 +55,7 @@ public class XomUnmarshallerTestUtilTest
     }
 
     @Test
-    public void testResolvesElementNot() throws Exception
+    void testResolvesElementNot() throws Exception
     {
         try (InputStream inputStream = new ClassPathResource("float.xml").getInputStream())
         {
