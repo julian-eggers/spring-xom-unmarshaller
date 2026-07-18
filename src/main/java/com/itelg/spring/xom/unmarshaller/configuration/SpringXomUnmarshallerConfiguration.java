@@ -16,7 +16,7 @@ public class SpringXomUnmarshallerConfiguration
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(Parser.class)
-    public XomUnmarshaller xomUnmarshaller(List<Parser<?>> parsers)
+    XomUnmarshaller xomUnmarshaller(List<Parser<?>> parsers)
     {
         return new XomUnmarshaller(parsers);
     }
