@@ -54,7 +54,7 @@ public class ChainedUnmarshaller implements Unmarshaller
             }
             catch (RuntimeException e)
             {
-                errors.add(e.getMessage());
+                errors.add(e.getCause() != null ? e.getMessage() + "; nested exception is " + e.getCause() : e.getMessage());
             }
         }
 
