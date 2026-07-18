@@ -11,7 +11,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.util.Assert;
@@ -58,7 +57,7 @@ public class ChainedUnmarshaller implements Unmarshaller
             }
         }
 
-        throw new UnmarshallingFailureException("Could not unmarshal (Errors: " + StringUtils.join(errors, ",") + ")");
+        throw new UnmarshallingFailureException("Could not unmarshal (Errors: " + String.join(",", errors) + ")");
     }
 
     private static byte[] toByteArray(Source source) throws IOException

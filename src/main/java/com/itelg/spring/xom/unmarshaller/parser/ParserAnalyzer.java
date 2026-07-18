@@ -1,6 +1,7 @@
 package com.itelg.spring.xom.unmarshaller.parser;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,21 +26,25 @@ public class ParserAnalyzer
         return holder;
     }
 
+    /**
+     * The parser class is inspected before its superclass, but for {@link #appendXPathExpression} a match on the
+     * superclass intentionally overwrites one already found on the class (see the Overwritten*Parser test fixtures).
+     */
+    private static List<Class<?>> classAndSuperclass(Parser<?> parser)
+    {
+        return List.of(parser.getClass(), parser.getClass().getSuperclass());
+    }
+
     private static Class<?> getReturnType(Parser<?> parser)
     {
-        for (Method method : parser.getClass().getDeclaredMethods())
+        for (Class<?> clazz : classAndSuperclass(parser))
         {
-            if (method.getName().equals("parse") && !method.getReturnType().equals(Object.class))
+            for (Method method : clazz.getDeclaredMethods())
             {
-                return method.getReturnType();
-            }
-        }
-
-        for (Method method : parser.getClass().getSuperclass().getDeclaredMethods())
-        {
-            if (method.getName().equals("parse") && !method.getReturnType().equals(Object.class))
-            {
-                return method.getReturnType();
+                if (method.getName().equals("parse") && !method.getReturnType().equals(Object.class))
+                {
+                    return method.getReturnType();
+                }
             }
         }
 
@@ -48,10 +53,10 @@ public class ParserAnalyzer
 
     private static void appendRootTagByType(ParserHolder holder)
     {
-        if (holder.getParser().getClass().getAnnotation(DisableRootTagTypeMatcher.class) == null && holder.getParser()
-                .getClass()
-                .getSuperclass()
-                .getAnnotation(DisableRootTagTypeMatcher.class) == null)
+        boolean disabled = classAndSuperclass(holder.getParser()).stream()
+                .anyMatch(clazz -> clazz.getAnnotation(DisableRootTagTypeMatcher.class) != null);
+
+        if (!disabled)
         {
             holder.addSupportedRootTag(holder.getReturnType().getSimpleName());
         }
@@ -59,40 +64,29 @@ public class ParserAnalyzer
 
     private static void appendRootTags(ParserHolder holder)
     {
-        for (RootTagMatcher rootTagMatcher : holder.getParser().getClass().getAnnotationsByType(RootTagMatcher.class))
+        for (Class<?> clazz : classAndSuperclass(holder.getParser()))
         {
-            holder.addSupportedRootTag(rootTagMatcher.value());
-        }
-
-        for (RootTagMatcher rootTagMatcher : holder.getParser().getClass().getSuperclass().getAnnotationsByType(RootTagMatcher.class))
-        {
-            holder.addSupportedRootTag(rootTagMatcher.value());
+            for (RootTagMatcher rootTagMatcher : clazz.getAnnotationsByType(RootTagMatcher.class))
+            {
+                holder.addSupportedRootTag(rootTagMatcher.value());
+            }
         }
     }
 
     private static void appendXPathExpression(ParserHolder holder)
     {
-        XPathExpressionMatcher classAnnotation = holder.getParser().getClass().getAnnotation(XPathExpressionMatcher.class);
-
-        if (classAnnotation != null)
+        for (Class<?> clazz : classAndSuperclass(holder.getParser()))
         {
-            holder.setXPathExpression(classAnnotation.value());
+            XPathExpressionMatcher annotation = clazz.getAnnotation(XPathExpressionMatcher.class);
 
-            if (StringUtils.isNotBlank(classAnnotation.expressionValue()))
+            if (annotation != null)
             {
-                holder.setXpathExpressionValue(classAnnotation.expressionValue());
-            }
-        }
+                holder.setXPathExpression(annotation.value());
 
-        XPathExpressionMatcher superclassAnnotation = holder.getParser().getClass().getSuperclass().getAnnotation(XPathExpressionMatcher.class);
-
-        if (superclassAnnotation != null)
-        {
-            holder.setXPathExpression(superclassAnnotation.value());
-
-            if (StringUtils.isNotBlank(superclassAnnotation.expressionValue()))
-            {
-                holder.setXpathExpressionValue(superclassAnnotation.expressionValue());
+                if (StringUtils.isNotBlank(annotation.expressionValue()))
+                {
+                    holder.setXpathExpressionValue(annotation.expressionValue());
+                }
             }
         }
     }
