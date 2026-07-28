@@ -60,18 +60,13 @@ public class XomUnmarshaller implements Unmarshaller
     {
         try (InputStream inputStream = ((StreamSource) source).getInputStream())
         {
-            if (preParseInterceptor != null)
+            var originalXml = IOUtils.toByteArray(inputStream);
+            var interceptedXml = preParseInterceptor.intercept(originalXml);
+
+            try (InputStream interceptedInputStream = new ByteArrayInputStream(interceptedXml))
             {
-                var originalXml = IOUtils.toByteArray(inputStream);
-                var interceptedXml = preParseInterceptor.intercept(originalXml);
-
-                try (InputStream interceptedInputStream = new ByteArrayInputStream(interceptedXml))
-                {
-                    return parse(interceptedInputStream);
-                }
+                return parse(interceptedInputStream);
             }
-
-            return parse(inputStream);
         }
         catch (UnmarshallingFailureException e)
         {

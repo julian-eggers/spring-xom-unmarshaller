@@ -1,10 +1,10 @@
 package com.itelg.spring.xom.unmarshaller.utils;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.oxm.XmlMappingException;
@@ -25,7 +25,7 @@ import com.itelg.xpath.helper.XPathHelper;
 
 import nu.xom.Element;
 
-public class ChainedUnmarshallerTest
+class ChainedUnmarshallerTest
 {
     private Unmarshaller stringIntegerUnmarshaller = new ChainedUnmarshaller(Arrays.asList(new StringUnmarshaller(), new IntegerUnmarshaller()));
 
@@ -36,20 +36,20 @@ public class ChainedUnmarshallerTest
     private String integerXml = "<Integer><value>123</value></Integer>";
 
     @Test
-    public void testConstructorWithNullList()
+    void testConstructorWithNullList()
     {
         assertThatThrownBy(() -> new ChainedUnmarshaller(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("'unmarshallers' must not be empty");
     }
 
     @Test
-    public void testConstructorWithEmptyList()
+    void testConstructorWithEmptyList()
     {
         assertThatThrownBy(() -> new ChainedUnmarshaller(Collections.emptyList())).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("'unmarshallers' must not be empty");
     }
 
     @Test
-    public void testSupports()
+    void testSupports()
     {
         assertFalse(stringIntegerUnmarshaller.supports(Double.class));
         assertTrue(stringIntegerUnmarshaller.supports(String.class));
@@ -61,7 +61,7 @@ public class ChainedUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshal() throws XmlMappingException, IOException
+    void testUnmarshal() throws XmlMappingException, IOException
     {
         assertEquals("abc", stringIntegerUnmarshaller.unmarshal(createSource(stringXml)));
         assertEquals("abc", integerStringUnmarshaller.unmarshal(createSource(stringXml)));
@@ -70,7 +70,7 @@ public class ChainedUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshalWithException() throws XmlMappingException, IOException
+    void testUnmarshalWithException() throws XmlMappingException, IOException
     {
         try
         {

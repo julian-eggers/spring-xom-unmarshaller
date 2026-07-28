@@ -2,10 +2,10 @@ package com.itelg.spring.xom.unmarshaller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
@@ -34,12 +34,12 @@ import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionOrderParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueCustomerParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueOrderParser;
 
-public class XomUnmarshallerTest
+class XomUnmarshallerTest
 {
     private Unmarshaller unmarshaller;
 
-    @Before
-    public void init()
+    @BeforeEach
+    void init()
     {
         List<Parser<?>> parsers = new ArrayList<>();
         parsers.add(new RootTagByTypeParser());
@@ -53,27 +53,27 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testConstructorWithParsersNull()
+    void testConstructorWithParsersNull()
     {
         assertThatThrownBy(() -> new XomUnmarshaller(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("'parsers' must not be empty");
     }
 
     @Test
-    public void testConstructorWithParsersEmpty()
+    void testConstructorWithParsersEmpty()
     {
         assertThatThrownBy(() -> new XomUnmarshaller(Collections.emptyList())).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("'parsers' must not be empty");
     }
 
     @Test
-    public void testConstructorWithPreParseInterceptorNull()
+    void testConstructorWithPreParseInterceptorNull()
     {
         assertThatThrownBy(() -> new XomUnmarshaller(Collections.singletonList(new RootTagByTypeParser()), null)).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("'preParseInterceptor' must not be null");
     }
 
     @Test
-    public void testSupports()
+    void testSupports()
     {
         assertTrue(unmarshaller.supports(String.class));
         assertTrue(unmarshaller.supports(Long.class));
@@ -84,7 +84,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownParser()
+    void testUnmarshallWithUnknownParser()
     {
         try (InputStream inputStream = new ClassPathResource("double.xml").getInputStream())
         {
@@ -99,7 +99,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithUnknownException()
+    void testUnmarshallWithUnknownException()
     {
         try (InputStream inputStream = new ByteArrayInputStream("<data>".getBytes()))
         {
@@ -109,13 +109,13 @@ public class XomUnmarshallerTest
         catch (Exception e)
         {
             assertEquals(UnmarshallingFailureException.class, e.getClass());
-            assertEquals("Could not unmarshal; nested exception is nu.xom.ParsingException: XML document structures must start and end within the same entity. at line 1, column 7", e
-                    .getMessage());
+            assertEquals("Could not unmarshal", e.getMessage());
+            assertTrue(e.getCause().getMessage().startsWith("XML document structures must start and end within the same entity."));
         }
     }
 
     @Test
-    public void testUnmarshallWithRootTagByType() throws IOException
+    void testUnmarshallWithRootTagByType() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("string.xml").getInputStream())
         {
@@ -125,7 +125,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithRootTagByAnnotationAndInteger() throws IOException
+    void testUnmarshallWithRootTagByAnnotationAndInteger() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("integer.xml").getInputStream())
         {
@@ -135,7 +135,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithRootTagByAnnotationAndLong() throws IOException
+    void testUnmarshallWithRootTagByAnnotationAndLong() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("long.xml").getInputStream())
         {
@@ -145,7 +145,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithDisableRootTagByType() throws IOException
+    void testUnmarshallWithDisableRootTagByType() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("float.xml").getInputStream())
         {
@@ -155,7 +155,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithXPathExpressionAndCustomer() throws IOException
+    void testUnmarshallWithXPathExpressionAndCustomer() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("response1-customer.xml").getInputStream())
         {
@@ -165,7 +165,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithXPathExpressionAndOrder() throws IOException
+    void testUnmarshallWithXPathExpressionAndOrder() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("response1-order.xml").getInputStream())
         {
@@ -175,7 +175,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithXPathExpressionValueAndCustomer() throws IOException
+    void testUnmarshallWithXPathExpressionValueAndCustomer() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("response2-customer.xml").getInputStream())
         {
@@ -185,7 +185,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithXPathExpressionValueAndOrder() throws IOException
+    void testUnmarshallWithXPathExpressionValueAndOrder() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("response2-order.xml").getInputStream())
         {
@@ -195,7 +195,7 @@ public class XomUnmarshallerTest
     }
 
     @Test
-    public void testUnmarshallWithPreParseInterceptor() throws IOException
+    void testUnmarshallWithPreParseInterceptor() throws IOException
     {
         try (InputStream inputStream = new ClassPathResource("string.xml").getInputStream())
         {

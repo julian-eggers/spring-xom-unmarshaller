@@ -1,11 +1,11 @@
 package com.itelg.spring.xom.unmarshaller.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.itelg.spring.xom.unmarshaller.test.domain.Customer;
 import com.itelg.spring.xom.unmarshaller.test.parser.DisabledRootTagByTypeParser;
@@ -27,10 +27,10 @@ import com.itelg.spring.xom.unmarshaller.test.parser.RootTagByTypeParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionCustomerParser;
 import com.itelg.spring.xom.unmarshaller.test.parser.XPathExpressionValueCustomerParser;
 
-public class ParserAnalyzerTest
+class ParserAnalyzerTest
 {
     @Test
-    public void testAnalyzeWithRootTagByType()
+    void testAnalyzeWithRootTagByType()
     {
         Parser<?> parser = new RootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -44,7 +44,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithRootTagByType()
+    void testAnalyzeExtendedClassWithRootTagByType()
     {
         Parser<?> parser = new ExtendedRootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -58,7 +58,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithRootTagByType()
+    void testAnalyzeOverwrittenClassWithRootTagByType()
     {
         Parser<?> parser = new OverwrittenRootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -72,7 +72,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeWithRootTagByAnnotation()
+    void testAnalyzeWithRootTagByAnnotation()
     {
         Parser<?> parser = new RootTagByAnnotationParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -87,7 +87,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithRootTagByAnnotation()
+    void testAnalyzeExtendedClassWithRootTagByAnnotation()
     {
         Parser<?> parser = new ExtendedRootTagByAnnotationParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -102,7 +102,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithRootTagByAnnotation()
+    void testAnalyzeOverwrittenClassWithRootTagByAnnotation()
     {
         Parser<?> parser = new OverwrittenRootTagByAnnotationParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -117,7 +117,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeWithDisabledRootTagByType()
+    void testAnalyzeWithDisabledRootTagByType()
     {
         Parser<?> parser = new DisabledRootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -131,7 +131,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithDisabledRootTagByType()
+    void testAnalyzeExtendedClassWithDisabledRootTagByType()
     {
         Parser<?> parser = new ExtendedDisabledRootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -145,7 +145,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithDisabledRootTagByType()
+    void testAnalyzeOverwrittenClassWithDisabledRootTagByType()
     {
         Parser<?> parser = new OverwrittenDisabledRootTagByTypeParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -159,7 +159,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeWithXPathExpression()
+    void testAnalyzeWithXPathExpression()
     {
         Parser<?> parser = new XPathExpressionCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -173,7 +173,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithXPathExpression()
+    void testAnalyzeExtendedClassWithXPathExpression()
     {
         Parser<?> parser = new ExtendedXPathExpressionCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -187,7 +187,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithXPathExpression()
+    void testAnalyzeOverwrittenClassWithXPathExpression()
     {
         Parser<?> parser = new OverwrittenXPathExpressionCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -201,7 +201,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeWithXPathExpressionValue()
+    void testAnalyzeWithXPathExpressionValue()
     {
         Parser<?> parser = new XPathExpressionValueCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -215,7 +215,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithXPathExpressionValue()
+    void testAnalyzeExtendedClassWithXPathExpressionValue()
     {
         Parser<?> parser = new ExtendedXPathExpressionValueCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -229,7 +229,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithXPathExpressionValue()
+    void testAnalyzeOverwrittenClassWithXPathExpressionValue()
     {
         Parser<?> parser = new OverwrittenXPathExpressionValueCustomerParser();
         ParserHolder holder = ParserAnalyzer.analyze(parser);
@@ -243,7 +243,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeWithInvalidParser()
+    void testAnalyzeWithInvalidParser()
     {
         try
         {
@@ -257,7 +257,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeExtendedClassWithInvalidParser()
+    void testAnalyzeExtendedClassWithInvalidParser()
     {
         try
         {
@@ -271,7 +271,7 @@ public class ParserAnalyzerTest
     }
 
     @Test
-    public void testAnalyzeOverwrittenClassWithInvalidParser()
+    void testAnalyzeOverwrittenClassWithInvalidParser()
     {
         try
         {

@@ -1,8 +1,10 @@
 # spring-xom-unmarshaller
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.itelg.spring/spring-xom-unmarshaller)
-[![Build](https://github.com/julian-eggers/spring-xom-unmarshaller/workflows/release/badge.svg)](https://github.com/julian-eggers/spring-xom-unmarshaller/actions)
-[![Nightly build](https://github.com/julian-eggers/spring-xom-unmarshaller/workflows/nightly/badge.svg)](https://github.com/julian-eggers/spring-xom-unmarshaller/actions)
+[![Maven Central](https://img.shields.io/maven-central/v/com.itelg.spring/spring-xom-unmarshaller.svg?label=maven-central)](https://search.maven.org/artifact/com.itelg.spring/spring-xom-unmarshaller)
+[![Release](https://github.com/julian-eggers/spring-xom-unmarshaller/actions/workflows/release.yml/badge.svg)](https://github.com/julian-eggers/spring-xom-unmarshaller/actions/workflows/release.yml)
+[![Nightly build](https://github.com/julian-eggers/spring-xom-unmarshaller/actions/workflows/nightly.yml/badge.svg)](https://github.com/julian-eggers/spring-xom-unmarshaller/actions/workflows/nightly.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=julian-eggers_spring-xom-unmarshaller&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=julian-eggers_spring-xom-unmarshaller)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=julian-eggers_spring-xom-unmarshaller&metric=coverage)](https://sonarcloud.io/summary/new_code?id=julian-eggers_spring-xom-unmarshaller)
 
 Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 
@@ -11,7 +13,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 <dependency>
   <groupId>com.itelg.spring</groupId>
   <artifactId>spring-xom-unmarshaller</artifactId>
-  <version>1.4.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
@@ -143,7 +145,7 @@ public XomUnmarshaller xomUnmarshaller(List<Parser<?>> parsers)
 #### Test-Support
 ```java
 Parser<?> parser = new IntegerParser();
-Assert.assertTrue(XomUnmarshallerTestUtil.resolves(parser, "<integer><data value=\"11\" /></integer>"));
+Assertions.assertTrue(XomUnmarshallerTestUtil.resolves(parser, "<integer><data value=\"11\" /></integer>"));
 ```
 
 
