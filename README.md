@@ -13,7 +13,7 @@ Spring XML Unmarshalling with [XOM](http://www.xom.nu/)
 <dependency>
   <groupId>com.itelg.spring</groupId>
   <artifactId>spring-xom-unmarshaller</artifactId>
-  <version>2.0.0-RC2</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 

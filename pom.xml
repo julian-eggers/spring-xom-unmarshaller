@@ -3,7 +3,7 @@
 
   <groupId>com.itelg.spring</groupId>
   <artifactId>spring-xom-unmarshaller</artifactId>
-  <version>2.0.0-RC2</version>
+  <version>2.0.0</version>
 
   <name>spring-xom-unmarshaller</name>
   <description>Spring XML Unmarshalling with XOM</description>
@@ -47,7 +47,7 @@
     <!-- Spring -->
     <spring-boot.version>3.5.16</spring-boot.version>
     <!-- Other -->
-    <xpath-helper.version>1.0.0-RC2</xpath-helper.version>
+    <xpath-helper.version>1.0.0</xpath-helper.version>
     <commons-io.version>2.22.0</commons-io.version>
     <!-- Testing -->
     <jacoco.version>0.8.15</jacoco.version>
