@@ -49,6 +49,8 @@
     <!-- Other -->
     <xpath-helper.version>2.0.0-RC1</xpath-helper.version>
     <commons-io.version>2.22.0</commons-io.version>
+    <!-- lombok must be pinned explicitly for the annotation-processor path; kept in sync with the Spring Boot BOM -->
+    <lombok.version>1.18.46</lombok.version>
     <!-- Testing -->
     <jacoco.version>0.8.15</jacoco.version>
     <!-- Explicit so Sonar reads the combined UT+IT jacoco report instead of guessing via scanner-default path conventions. -->
@@ -85,6 +87,11 @@
     </dependency>
 
     <!-- Other -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.itelg</groupId>
       <artifactId>xpath-helper</artifactId>
